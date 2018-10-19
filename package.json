@@ -1,11 +1,21 @@
 {
-  "name": "toy-robot-simulator",
-  "version": "1.0.0",
-  "description": "Toy Robot Simulator Challenge",
-  "main": "src/app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Lu-Vuong <lu-vuongle@hotmail.com>",
-  "license": "MIT"
+	"name": "toy-robot-simulator",
+	"version": "1.0.0",
+	"description": "Toy Robot Simulator Challenge",
+	"main": "src/app.js",
+	"scripts": {
+		"test": "jest --notify --coverage",
+		"test:watch": "jest --watchAll",
+		"dev": "nodemon ./src/app.js"
+	},
+	"author": "Lu-Vuong <lu-vuongle@hotmail.com>",
+	"license": "MIT",
+	"dependencies": {
+		"chalk": "^2.4.1",
+		"figlet": "^1.2.1",
+		"inquirer": "^6.2.0"
+	},
+	"devDependencies": {
+		"jest": "^23.6.0"
+	}
 }
