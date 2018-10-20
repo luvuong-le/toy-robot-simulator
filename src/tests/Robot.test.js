@@ -36,11 +36,35 @@ describe('Robot Class Testing', () => {
 		expect(robot.direction).toBe(Direction.NORTH);
     });
 
-    it('should move the robot forward', () => {
+    it('should move the robot forward north', () => {
         robot.move();
         expect(robot.x).toBe(0);
         expect(robot.y).toBe(1);
         expect(robot.direction).toBe(Direction.NORTH);
+    });
+
+    it('should move the robot forward east', () => {
+        robot.place(3, 3,'EAST');
+        robot.move();
+        expect(robot.x).toBe(4);
+        expect(robot.y).toBe(3);
+        expect(robot.direction).toBe(Direction.EAST);
+    });
+
+    it('should move the robot forward south', () => {
+        robot.place(3, 3,'SOUTH');
+        robot.move();
+        expect(robot.x).toBe(3);
+        expect(robot.y).toBe(2);
+        expect(robot.direction).toBe(Direction.SOUTH);
+    });
+
+    it('should move the robot forward west', () => {
+        robot.place(3, 3,'WEST');
+        robot.move();
+        expect(robot.x).toBe(2);
+        expect(robot.y).toBe(3);
+        expect(robot.direction).toBe(Direction.WEST);
     });
 
     it('should not move the robot past the boundary of the grid', () => {
@@ -68,4 +92,12 @@ describe('Robot Class Testing', () => {
         expect(robot.y).toBe(0);
         expect(robot.direction).toBe(Direction.EAST);
     })
+
+    it('should validate a correct direction', () => {
+        expect(robot.isValidDirection('INVALID')).toBe(false);
+    });
+
+    it('should return the correct direction string based on the direction index', () => {
+        expect(robot.convertDirectionToString()).toBe('NORTH');
+    });
 });

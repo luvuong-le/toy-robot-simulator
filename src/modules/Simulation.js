@@ -11,6 +11,9 @@ module.exports = class Simulation {
         this.grid = grid;
     }
 
+    /**
+     *  @description Display the help screen in prompt mode
+     */
     showHelpScreen() {
         info('Toy Robot Help Screen');
         info('-----------------------------');
@@ -24,7 +27,10 @@ module.exports = class Simulation {
 
         this.showMenuPrompt();
     }
-
+    
+    /**
+     * @description displays a prompt for the user to enter a command
+     */
     async showMenuPrompt() {
         const cmd = await inquirer.prompt(command);
 
@@ -42,6 +48,9 @@ module.exports = class Simulation {
         this.parseCommandsFromPrompt(cmd.action.toUpperCase());
     };
 
+    /**
+     * @param  {String} filePath
+     */
     parseCommandsFromFile (filePath) {
         info('File Argument Detected!')
         info('Reading File');
@@ -67,7 +76,12 @@ module.exports = class Simulation {
         })
     }
 
-    hasMultipleInputs(command) {
+    /**
+     * @param  {String} command
+     * @description checks the command for multiple commands
+     * @returns Boolean
+     */
+    hasMultipleCommands(command) {
         if (/(s|PLACE )([0-9],)([0-9],)([A-Z]{4})/.test(command)) {
             return command.replace(/(s|PLACE )([0-9],)([0-9],)([A-Z]{4})/, '').trim().split(' ').length > 1;
         } else if (!/(s|PLACE )([0-9],)([0-9],)([A-Z]{4})/.test(command) && command.split(" ").length > 1) {
@@ -76,8 +90,12 @@ module.exports = class Simulation {
         return false;
     }
 
+    /**
+     * @param  {String} command
+     * @description Gets commands from user input and validates it accordingly before executing
+     */
     parseCommandsFromPrompt(command) {        
-        if (this.hasMultipleInputs(command)) {
+        if (this.hasMultipleCommands(command)) {
             error('[ERROR] Please enter one command only');
 			return this.showMenuPrompt();
         }
@@ -94,6 +112,10 @@ module.exports = class Simulation {
         return this.showMenuPrompt();
     }
 
+    /**
+     * @param  {String} command
+     * @description Executes a given command 
+     */
     executeCommand(command) {
         if (command.includes('PLACE')) {
             let placeData = buildPlaceObject(command.split(/[ ,]+/));

@@ -1,3 +1,4 @@
+const path = require('path');
 const argv = require('yargs')
 	.usage('Usage: $0 <command> [Options]')
     .command('run', 'Run the simulation', {
@@ -11,7 +12,15 @@ const argv = require('yargs')
         }
     })
     .check((argv) => {
-        return argv.f === true ? new Error('Error no file was passed through') : true;
+        // return argv.f === true ? new Error('Error no file was passed through') : true;
+        if (argv.f === true) {
+            return new Error('[ERROR] no file was passed through');
+        }
+        
+        if (path.extname(argv.f) !== '.txt') {
+            return new Error('[ERROR] File must be of type .txt');
+        }
+        return true;
     })
 	.example('run', 'Run commands automatically from prompt')
 	.example('run -p', 'Run commands from prompt')
@@ -26,6 +35,7 @@ const argv = require('yargs')
 
 const Simulation = require('./modules/Simulation');
 
+/** Run the simulation */
 const simulation = new Simulation({x: 5, y: 5}, argv.file || null);
 
 simulation.run();

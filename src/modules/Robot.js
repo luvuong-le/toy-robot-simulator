@@ -1,5 +1,6 @@
 const { error } = require('../helpers/utils');
 
+/** Direction Indexes */
 const Direction = {
     NORTH: 1,
     EAST: 2,
@@ -14,7 +15,13 @@ module.exports = class Robot {
         this.direction = Direction.NORTH;
         this.placed = false;
     }
-
+    
+    /**
+     * @param  {Number} x
+     * @param  {Number} y
+     * @param  {String} direction
+     * @description Places the robot on the grid with an x,y and direction
+     */
     place(x, y, direction) {
         if ((x <= this.boundaries.x && x >= 0) && (this.y <= this.boundaries.y && y >= 0) && this.isValidDirection(direction)) {
 			this.x = x;
@@ -26,6 +33,9 @@ module.exports = class Robot {
         }
     };
 
+    /**
+     * @description Moves the robot forward based on it's current facing direction
+     */
     move() {
         switch (this.direction) {
             case Direction.NORTH:
@@ -43,24 +53,42 @@ module.exports = class Robot {
         }
     };
 
+    /**
+     * @description Turns the Robot 90deg to the left from it's current direction
+     */
     left() {
         return this.direction - 1 === 0 ? this.direction = Direction.WEST : this.direction--;
     }
 
+    /**
+     * @description Turns the Robot 90deg to the right from it's current direction
+     */
     right() {
         return this.direction + 1 === Object.keys(Direction).length ? this.direction = Direction.NORTH : this.direction++;
     }
 
+    /**
+     * @description Provides the Direction name in string form from the index
+     * @returns Direction Name - 'NORTH', 'SOUTH', 'EAST', 'WEST'
+     */
     convertDirectionToString() {
         for (const dir in Direction) {
             if (this.direction === Direction[dir]) return dir;
         }
     }
 
+    /**
+     * @param  {String} direction
+     * @description Checks if the direction is valid or not
+     * @returns Boolean
+     */
     isValidDirection(direction) {
 		return !Direction[direction]? false: true;
     }
-
+    
+    /**
+     * @description Return the current location details of the robot
+     */
     report() {
         return `${this.x},${this.y},${this.convertDirectionToString()}`
     }
