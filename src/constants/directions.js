@@ -1,5 +1,4 @@
 module.exports = {
-    /** Could potentially use degrees */
     Direction: {
         NORTH: 1,
         EAST: 2,
