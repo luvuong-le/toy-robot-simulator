@@ -29,7 +29,7 @@ module.exports = class Robot {
 			this.direction = Direction[direction];
 			this.placed = true;
 		} else {
-            return error(`Robot could not be placed. Please check the input again`);
+            return error(`Robot could not be placed. Please check that the direction is correct and the position is valid`);
         }
     };
 

@@ -12,13 +12,13 @@ const argv = require('yargs')
         }
     })
     .check((argv) => {
-        if (argv.f === true) {
+        if (argv.f && argv.f === true) {
             return new Error('[ERROR] no file was passed through');
         }
         
-        if (path.extname(argv.f) !== '.txt') {
-            return new Error('[ERROR] File must be of type .txt');
-        }
+        if (argv.f && path.extname(argv.f) !== '.txt') {
+			return new Error('[ERROR] File must be of type .txt');
+		}
         return true;
     })
 	.example('run', 'Run commands automatically from prompt')
