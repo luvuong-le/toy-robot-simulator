@@ -12,7 +12,6 @@ const argv = require('yargs')
         }
     })
     .check((argv) => {
-        // return argv.f === true ? new Error('Error no file was passed through') : true;
         if (argv.f === true) {
             return new Error('[ERROR] no file was passed through');
         }

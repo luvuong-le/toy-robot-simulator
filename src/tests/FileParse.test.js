@@ -3,7 +3,6 @@ const path = require('path');
 
 
 describe('FileParser Tests', () => {
-
     let filePath;
 
     beforeEach(() => {

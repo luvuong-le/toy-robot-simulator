@@ -1,6 +1,8 @@
 # 🤖 Toy Robot Simulator
 
 [![Build Status](https://travis-ci.org/luvuong-le/toy-robot-simulator.svg?branch=master)](https://travis-ci.org/luvuong-le/toy-robot-simulator)
+[![dependencies Status](https://david-dm.org/luvuong-le/toy-robot-simulator/status.svg)](https://david-dm.org/luvuong-le/toy-robot-simulator)
+[![devDependencies Status](https://david-dm.org/luvuong-le/toy-robot-simulator/dev-status.svg)](https://david-dm.org/luvuong-le/toy-robot-simulator?type=dev)
 
 ## Description
 
