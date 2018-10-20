@@ -1,9 +1,15 @@
 const Robot = require('../modules/Robot');
-const { Direction } = require('../constants/directions');
 
 describe('Robot Class Testing', () => {
 
     let robot = null;
+    
+    const Direction = {
+        NORTH: 1,
+        EAST: 2,
+        SOUTH: 3,
+        WEST: 4
+    }
 
     beforeEach(() => {
         robot = new Robot({x: 5, y: 5});

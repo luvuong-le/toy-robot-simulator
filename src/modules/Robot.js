@@ -1,5 +1,11 @@
-const { Direction } = require('../constants/directions');
-const { error, isValidDirection } = require('../helpers/utils');
+const { error } = require('../helpers/utils');
+
+const Direction = {
+    NORTH: 1,
+    EAST: 2,
+    SOUTH: 3,
+    WEST: 4
+}
 module.exports = class Robot {
     constructor (boundaries) {
         this.x = 0;
@@ -10,7 +16,7 @@ module.exports = class Robot {
     }
 
     place(x, y, direction) {
-        if ((x <= this.boundaries.x && x >= 0) && (this.y <= this.boundaries.y && y >= 0) && isValidDirection(direction)) {
+        if ((x <= this.boundaries.x && x >= 0) && (this.y <= this.boundaries.y && y >= 0) && this.isValidDirection(direction)) {
 			this.x = x;
 			this.y = y;
 			this.direction = Direction[direction];
@@ -49,6 +55,10 @@ module.exports = class Robot {
         for (const dir in Direction) {
             if (this.direction === Direction[dir]) return dir;
         }
+    }
+
+    isValidDirection(direction) {
+		return !Direction[direction]? false: true;
     }
 
     report() {

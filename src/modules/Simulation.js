@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Robot = require('./Robot');
 const inquirer = require('inquirer');
-const { log, error, info, logTitle, exit, success, buildPlaceObject } = require('../helpers/utils');
+const { log, error, info, logTitle, success, buildPlaceObject } = require('../helpers/utils');
 const { command } = require('../helpers/questions');
 
 module.exports = class Simulation {
