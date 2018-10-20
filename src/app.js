@@ -1,7 +1,8 @@
+const fs = require('fs');
 const Robot = require('./modules/Robot');
 const inquirer = require('inquirer');
-const { log, error, info, success, logTitle, exit } = require('./helpers/utils')
-const { command, commandType } = require('./helpers/questions');
+const { log, error, info, logTitle, exit, success, buildPlaceObject } = require('./helpers/utils')
+const { command } = require('./helpers/questions');
 
 const robot = new Robot();
 
@@ -19,9 +20,10 @@ const showHelpScreen = () => {
 }
 
 const showMenuPrompt = async () => {
+    info('No Input File Detected, Switching to prompt mode');
     const cmd = await inquirer.prompt(command);
 
-    info('\nCommand To Execute: ', cmd.action);
+    log('\nCommand To Execute: ', cmd.action);
 
     if (cmd.action === 'HELP') return showHelpScreen();
 
@@ -32,12 +34,32 @@ const showMenuPrompt = async () => {
         return showMenu();
     }
 
-    executeCommands(cmd.action);
-
+    readCommandsFromPrompt(cmd.action);
 };
 
 const readCommandsFromFile = (filePath) => {
     // Read command actions from file
+    info('File Argument Detected!')
+    info('Reading File');
+    fs.readFile(filePath, 'utf-8', (err, data) => {
+        if (err) throw err;
+        let commands = data.split(/\r\n/);
+
+        // // Have commands, check for PLACE command and if so, 
+        // console.log(commands);
+        success('Beginning Execution of Commands');
+
+        for (const command of commands) {
+            if (!command.includes('PLACE') && !robot.placed) {
+                info(`Skipping command ${command}, robot must be placed first`);
+                continue;
+            }
+            info(`Executing ${command}`);
+            executeCommands(command);
+        }
+
+        info('Command Execution Completed');
+    })
 }
 
 const readCommandsFromPrompt = (command) => {
@@ -45,35 +67,34 @@ const readCommandsFromPrompt = (command) => {
 }
 
 const executeCommands = (command) => {
-    switch (command) {
-		case 'MOVE':
-			robot.move();
-			break;
-		case 'LEFT':
-			robot.left();
-			break;
-		case 'RIGHT':
-			robot.right();
-			break;
-		case 'REPORT':
-			robot.report();
-			break;
-		default:
-			error('\n[ERROR]: Invalid command\n');
-			showMenu();
-	}
-};
-
-const start = async () => {
-    logTitle('Toy Robot \n');
-
-    const response = await inquirer.prompt(commandType);
-
-    if (response.cmdType === 1) {
-        showMenuPrompt();
+    if (command.includes('PLACE')) {
+        let placeData = buildPlaceObject(command.split(/[ ,]+/));
+        robot.place(placeData.x, placeData.y, placeData.direction);
     } else {
-        readCommandsFromFile();
-    }
+        switch (command) {
+            case 'MOVE':
+                robot.move();
+                break;
+            case 'LEFT':
+                robot.left();
+                break;
+            case 'RIGHT':
+                robot.right();
+                break;
+            case 'REPORT':
+                info('Current Location');
+                console.log(robot.report());
+                break;
+            default:
+                error('\n[ERROR]: Invalid command detected\n');
+                break;
+        } 
+    } 
 };
 
-start();
+const startSimulation = async () => {
+    logTitle('Toy Robot \n');
+    return process.argv.length === 3 ? readCommandsFromFile(process.argv[2]) : showMenuPrompt();
+};
+
+startSimulation();
