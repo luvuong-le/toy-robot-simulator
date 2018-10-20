@@ -23,6 +23,13 @@ describe('Robot Class Testing', () => {
         expect(robot.direction).toBe(Direction.EAST);
     });
 
+    it('should not place the robot if the direction is incorrect', () => {
+        robot.place(3, 3, 'WES');
+		expect(robot.x).toBe(0);
+		expect(robot.y).toBe(0);
+		expect(robot.direction).toBe(Direction.NORTH);
+    });
+
     it('should move the robot forward', () => {
         robot.move();
         expect(robot.x).toBe(0);

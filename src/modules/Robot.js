@@ -1,5 +1,5 @@
 const { Direction } = require('../constants/directions');
-
+const { error, isValidDirection } = require('../helpers/utils');
 module.exports = class Robot {
     constructor (boundaries) {
         this.x = 0;
@@ -10,11 +10,13 @@ module.exports = class Robot {
     }
 
     place(x, y, direction) {
-        if (x <= this.boundaries.x && x >= 0 || this.y <= this.boundaries.y && y >= 0) {
-            this.x = x;
-            this.y = y;
-            this.direction = Direction[direction];
-            this.placed = true;
+        if ((x <= this.boundaries.x && x >= 0) && (this.y <= this.boundaries.y && y >= 0) && isValidDirection(direction)) {
+			this.x = x;
+			this.y = y;
+			this.direction = Direction[direction];
+			this.placed = true;
+		} else {
+            return error(`Robot could not be placed. Please check the input again`);
         }
     };
 

@@ -4,10 +4,11 @@
 	"description": "Toy Robot Simulator Challenge",
 	"main": "src/app.js",
 	"scripts": {
-		"test": "jest --notify --coverage",
+		"test": "jest --silent --notify --coverage",
 		"test:watch": "jest --watchAll",
 		"dev": "nodemon ./src/app.js",
-		"start": "node src/app.js run -f src/commands.txt"
+		"start:file": "node src/app.js run -f src/commands.txt",
+		"start": "node src/app.js run -p"
 	},
 	"author": "Lu-Vuong <lu-vuongle@hotmail.com>",
 	"license": "MIT",

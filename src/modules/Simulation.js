@@ -12,20 +12,20 @@ module.exports = class Simulation {
     }
 
     showHelpScreen() {
-        info('\nToy Robot Help Screen');
-        info('\n-----------------------------');
-        info('\nList of available commands are as follows: ');
-        info('\nPLACE: Place the robot on the grid ');
-        info('\nMOVE: Move the robot forward one step');
-        info('\nLEFT: Turn the robot 90deg left');
-        info('\nRIGHT: Turn the robot 90deg right');
-        info('\nEXIT: Exit the application \n');
+        info('Toy Robot Help Screen');
+        info('-----------------------------');
+        info('Available commands are as follows: ');
+        info('PLACE x,y,direction: Place the robot on the grid ');
+        info('MOVE: Move the robot forward one step');
+        info('LEFT: Turn the robot 90deg left');
+        info('RIGHT: Turn the robot 90deg right');
+        info('REPORT: Display the current position and direction of the robot');
+        info('EXIT: Exit the application \n');
 
         this.showMenuPrompt();
     }
 
     async showMenuPrompt() {
-        info('No Input File Detected, Switching to prompt mode');
         const cmd = await inquirer.prompt(command);
 
         log('\nCommand To Execute: ', cmd.action.toUpperCase());
@@ -39,11 +39,10 @@ module.exports = class Simulation {
 			return this.showMenuPrompt();
 		}
 
-        readCommandsFromPrompt(cmd.action.toUpperCase());
+        this.parseCommandsFromPrompt(cmd.action.toUpperCase());
     };
 
     parseCommandsFromFile (filePath) {
-        // Read command actions from file
         info('File Argument Detected!')
         info('Reading File');
         fs.readFile(filePath, 'utf-8', (err, data) => {
@@ -51,7 +50,7 @@ module.exports = class Simulation {
                 error('[ERROR]: File could not be read');
                 return;
             };
-            let commands = data.split(/\r\n/);
+            const commands = data.split(/\r\n/);
 
             success('Beginning Execution of Commands');
 
@@ -68,8 +67,31 @@ module.exports = class Simulation {
         })
     }
 
-    parseCommandsFromPrompt(command) {
+    hasMultipleInputs(command) {
+        if (/(s|PLACE )([0-9],)([0-9],)([A-Z]{4})/.test(command)) {
+            return command.replace(/(s|PLACE )([0-9],)([0-9],)([A-Z]{4})/, '').trim().split(' ').length > 1;
+        } else if (!/(s|PLACE )([0-9],)([0-9],)([A-Z]{4})/.test(command) && command.split(" ").length > 1) {
+            return true;
+        } 
+        return false;
+    }
 
+    parseCommandsFromPrompt(command) {        
+        if (this.hasMultipleInputs(command)) {
+            error('[ERROR] Please enter one command only');
+			return this.showMenuPrompt();
+        }
+
+        if (!command.includes('PLACE') && !this.robot.placed) {
+            info(`Skipping command ${command}, robot must be placed first`);
+        }
+
+        info(`Executing ${command.trim()}`);
+
+        this.executeCommand(command.trim());
+
+        info('Command Execution Completed');
+        return this.showMenuPrompt();
     }
 
     executeCommand(command) {
@@ -88,8 +110,8 @@ module.exports = class Simulation {
                     this.robot.right();
                     break;
                 case 'REPORT':
-                    info('Current Location');
-                    console.log(this.robot.report());
+                    success('Reporting Current Location');
+                    success(this.robot.report());
                     break;
                 default:
                     error('\n[ERROR]: Invalid command detected\n');
@@ -109,6 +131,7 @@ module.exports = class Simulation {
     }
 
     exit() {
-        return process.exit(1);
+        success('Exiting application');
+        return process.exit();
     }
 }
