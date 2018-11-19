@@ -98,6 +98,10 @@ node src/app.js run -f <path to file> - Run with a custom txt file
 node src/app.js run -h - Bring up the help screen for the cli application
 ```
 
-### Other Notes
+### Limitations
 
 Can only currently read from .txt files
+
+### Refactor Notes
+
+- Create a more loosely coupled application
